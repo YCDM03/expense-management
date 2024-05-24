@@ -1,48 +1,28 @@
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
+import { Children, useState } from "react";
+import {
+  StForm,
+  StDiv,
+  StInput,
+  StValidDiv,
+  StBtnDiv,
+} from "../shared/FormComponent";
+import { useNavigate } from "react-router-dom";
 
-const ExForm = styled.form`
-  max-width: 1200px;
-  min-width: 500px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: white;
-  display: flex;
-  gap: 20px;
-  border: 1px solid #5b5bf5;
-  border-radius: 10px;
-`;
-const ExDiv = styled.div`
-  width: 23%;
-`;
-const ExInput = styled.input`
-  width: 100%;
-  height: 20px;
-  margin-right: 20px;
-  border: 1px solid ${(props) => (props.$valid ? "gray" : "red")};
-  border-radius: 3px;
-`;
-
-const ExButton = styled.button`
-  width: 8%;
-  align-self: end;
-  margin-left: auto;
-  color: white;
-  background-color: #5b5bf5;
-  border: 1px solid white;
-  border-radius: 5px;
-  &:hover {
-    background-color: #373797;
-  }
-  &:active {
-    background-color: #5b5bf5;
-  }
-`;
 const expenseArr = ["날짜", "지출 항목", "지출 금액", "지출 내용"];
 const expenseNameArr = ["date", "type", "price", "detail"];
 
-export default function ExpenseForm({ setList }) {
+export default function ExpenseForm({
+  restList,
+  setList,
+  editState,
+  targetItem,
+  id,
+  children,
+  selectedMonth,
+}) {
+  const navigate = useNavigate();
   const [valid, setValid] = useState([
     { date: true },
     { type: true },
@@ -54,11 +34,20 @@ export default function ExpenseForm({ setList }) {
     e.preventDefault();
     const formData = new FormData(e.target);
 
-    if (isNaN(+formData.get("price"))) {
-      setValid((prev) => ([...prev][2][`${expenseNameArr[2]}`] = false));
-      return alert("올바른 금액을 입력하세요");
+    //form vaildation
+    if (isNaN(formData.get("price"))) {
+      setValid(() => {
+        const arr = [...valid];
+        arr[2][`price`] = false;
+        return arr;
+      });
+      return alert("금액은 숫자로 입력해주세요");
     } else {
-      setValid((prev) => ([...prev][2][`${expenseNameArr[2]}`] = true));
+      setValid(() => {
+        const arr = [...valid];
+        arr[2][`price`] = true;
+        return arr;
+      });
     }
 
     const inputArr = expenseNameArr.map((el) => {
@@ -82,43 +71,69 @@ export default function ExpenseForm({ setList }) {
     }
 
     const [date, type, price, detail] = inputArr;
-    setList((prev) => [...prev, { id: uuidv4(), date, type, price, detail }]);
+    if (!date || !type || !price || !detail) {
+      return;
+    }
+    //////////////////////////////////////////////////
+
+    editState
+      ? setList(() => [...restList, { id, date, type, price: +price, detail }])
+      : setList((prev) => [
+          ...prev,
+          { id: uuidv4(), date, type, price, detail },
+        ]);
+
+    editState ? navigate("/") : e.target.reset();
   };
 
   return (
-    <ExForm onSubmit={addExpenseItem}>
+    <StForm onSubmit={addExpenseItem} $targetItem={targetItem ? true : false}>
       {expenseArr.map((item, i) => {
         if (item === "날짜") {
           return (
-            <ExDiv key={"div" + item}>
+            <StDiv key={"div" + item} $targetItem={targetItem ? true : false}>
               <h4>{item.slice(-2)}</h4>
-              <ExInput
-                key={item}
+              <StInput
+                key={item + selectedMonth}
                 type="date"
                 name={expenseNameArr[i]}
                 placeholder={item}
                 min="2024-01-01"
                 max="2024-12-31"
                 $valid={valid[i][`${expenseNameArr[i]}`]}
+                defaultValue={
+                  editState
+                    ? targetItem[expenseNameArr[i]]
+                    : "2024-" + selectedMonth + "-01"
+                }
               />
-            </ExDiv>
+              <StValidDiv $valid={valid[i][`${expenseNameArr[i]}`]}>
+                올바른 날짜를 입력해주세요
+              </StValidDiv>
+            </StDiv>
           );
         }
 
         return (
-          <ExDiv key={"div" + item}>
+          <StDiv key={"div" + item} $targetItem={targetItem ? true : false}>
             <h4>{item.slice(-2)}</h4>
-            <ExInput
+            <StInput
               key={item}
               type="text"
               name={expenseNameArr[i]}
               placeholder={item}
               $valid={valid[i][`${expenseNameArr[i]}`]}
+              defaultValue={targetItem ? targetItem[expenseNameArr[i]] : null}
             />
-          </ExDiv>
+            <StValidDiv $valid={valid[i][`${expenseNameArr[i]}`]}>
+              올바른 {item.slice(-2)}을 입력해주세요
+            </StValidDiv>
+          </StDiv>
         );
       })}
-      <ExButton>저장</ExButton>
-    </ExForm>
+      <StBtnDiv $targetItem={targetItem ? true : false}>
+        {children ? children : null}
+      </StBtnDiv>
+    </StForm>
   );
 }
