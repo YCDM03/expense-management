@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import ExpenseForm from "../components/ExpenseForm";
 import Calendar from "../components/Calendar";
 import ExpenseList from "../components/ExpenseList";
 import { StButton } from "../shared/FormComponent";
+import { ListContext } from "../context/ListContext";
 
-export default function Home({ list, setList }) {
+export default function Home() {
+  const { list, setList } = useContext(ListContext);
+
   const month =
     new Date().getMonth() + 1 < 10
       ? "0" + (new Date().getMonth() + 1)
@@ -24,16 +27,15 @@ export default function Home({ list, setList }) {
   return (
     <>
       <div>
-        <ExpenseForm setList={setList} selectedMonth={selectedMonth}>
+        <ExpenseForm selectedMonth={selectedMonth}>
           <StButton>저장</StButton>
         </ExpenseForm>
         <Calendar
-          list={list}
           setMonthList={setMonthList}
           selectedMonth={selectedMonth}
           setSelectedMonth={setSelectedMonth}
         />
-        <ExpenseList list={list} setList={setList} monthList={monthList} />
+        <ExpenseList monthList={monthList} />
       </div>
     </>
   );

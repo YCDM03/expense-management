@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import Edit from "../pages/Edit";
 import Home from "../pages/Home";
+import { ListContext } from "../context/ListContext";
 
 const Router = () => {
   const fakeData = [
@@ -59,13 +60,12 @@ const Router = () => {
   const [list, setList] = useState(fakeData);
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home list={list} setList={setList} />} />
-        <Route
-          path="/edit/:id"
-          element={<Edit list={list} setList={setList} />}
-        />
-      </Routes>
+      <ListContext.Provider value={{ list, setList }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/edit/:id" element={<Edit />} />
+        </Routes>
+      </ListContext.Provider>
     </BrowserRouter>
   );
 };

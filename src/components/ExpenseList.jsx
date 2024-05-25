@@ -45,7 +45,7 @@ const StH3 = styled.h3`
   color: #fd009c;
 `;
 
-export default function ExpenseList({ list, monthList }) {
+export default function ExpenseList({ monthList }) {
   const usedList = monthList === null ? list : monthList;
   return (
     <StUl>

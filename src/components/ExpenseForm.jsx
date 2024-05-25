@@ -15,7 +15,6 @@ const expenseNameArr = ["date", "type", "price", "detail"];
 
 export default function ExpenseForm({
   restList,
-  setList,
   editState,
   targetItem,
   id,

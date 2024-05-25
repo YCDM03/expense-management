@@ -1,13 +1,17 @@
 import { useParams, Link } from "react-router-dom";
 import ExpenseForm from "../components/ExpenseForm";
 import { StButton } from "../shared/FormComponent";
+import { useContext } from "react";
+import { ListContext } from "../context/ListContext";
 
 const linkStyle = {
   textDecoration: "none",
   color: "white",
 };
 
-export default function Edit({ list, setList }) {
+export default function Edit() {
+  const { list, setList } = useContext(ListContext);
+
   const params = useParams();
   const targetItem = list.find((e) => {
     return e.id === params.id;
@@ -20,7 +24,6 @@ export default function Edit({ list, setList }) {
   return (
     <>
       <ExpenseForm
-        setList={setList}
         restList={restList}
         editState={editState}
         targetItem={targetItem}

@@ -48,7 +48,6 @@ const monthArr = [
 ];
 
 export default function Calendar({
-  list,
   setMonthList,
   selectedMonth,
   setSelectedMonth,
