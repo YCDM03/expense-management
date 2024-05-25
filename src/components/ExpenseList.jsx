@@ -11,7 +11,6 @@ const StUl = styled.ul`
   background-color: white;
   display: flex;
   flex-direction: column;
-  /* gap: 20px; */
   border: 1px solid #5b5bf5;
   border-radius: 10px;
 `;
@@ -45,15 +44,17 @@ const StH3 = styled.h3`
   color: #fd009c;
 `;
 
-export default function ExpenseList({ list, monthList }) {
-  const usedList = monthList === null ? list : monthList;
+export default function ExpenseList({ list, selectedMonth }) {
+  const monthList = list.filter((el) => {
+    return el.date.slice(5, 7) === selectedMonth;
+  });
   return (
     <StUl>
-      {usedList.map((el) => {
+      {monthList.map((el) => {
         const { id, date, type, price, detail } = el;
         return (
           <StLi key={id}>
-            <Link style={linkStyle} to={"/edit/" + id} list={{ list }}>
+            <Link style={linkStyle} to={"/edit/" + id}>
               <StH3>{date}</StH3>
               <StContentDiv>
                 <span>

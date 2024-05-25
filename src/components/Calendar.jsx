@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useState } from "react";
 
 const StCalUl = styled.ul`
   max-width: 1200px;
@@ -47,34 +46,18 @@ const monthArr = [
   `12`,
 ];
 
-export default function Calendar({
-  list,
-  setMonthList,
-  selectedMonth,
-  setSelectedMonth,
-}) {
-  const [select, setSelect] = useState(selectedMonth);
-
-  const sortMonth = (month) => {
-    const arr = [...list].filter((el) => {
-      return el.date.slice(5, 7) === month;
-    });
-    setMonthList(() => arr);
-  };
-
+export default function Calendar({ selectedMonth, setSelectedMonth }) {
   return (
     <StCalUl>
-      {monthArr.map((month, i) => {
+      {monthArr.map((month) => {
         return (
           <StMonthLi
             key={month}
             onClick={() => {
-              setSelect(() => month);
-              sortMonth(month);
-              localStorage.setItem("selectedMonth", month);
               setSelectedMonth(() => month);
+              localStorage.setItem("selectedMonth", month);
             }}
-            $selected={select === month ? true : false}
+            $selected={selectedMonth === month ? true : false}
           >
             {month + " 월"}
           </StMonthLi>

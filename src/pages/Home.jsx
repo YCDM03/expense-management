@@ -16,11 +16,6 @@ export default function Home({ list, setList }) {
 
   const [selectedMonth, setSelectedMonth] = useState(localMonth);
 
-  const arr = list.filter((el) => {
-    return el.date.slice(5, 7) === selectedMonth;
-  });
-  const [monthList, setMonthList] = useState(arr);
-
   return (
     <>
       <div>
@@ -29,11 +24,10 @@ export default function Home({ list, setList }) {
         </ExpenseForm>
         <Calendar
           list={list}
-          setMonthList={setMonthList}
           selectedMonth={selectedMonth}
           setSelectedMonth={setSelectedMonth}
         />
-        <ExpenseList list={list} setList={setList} monthList={monthList} />
+        <ExpenseList list={list} selectedMonth={selectedMonth} />
       </div>
     </>
   );
