@@ -1,13 +1,10 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import ExpenseForm from "../components/ExpenseForm";
 import Calendar from "../components/Calendar";
 import ExpenseList from "../components/ExpenseList";
 import { StButton } from "../shared/FormComponent";
-import { ListContext } from "../context/ListContext";
 
 export default function Home() {
-  const { list } = useContext(ListContext);
-
   const month =
     new Date().getMonth() + 1 < 10
       ? "0" + (new Date().getMonth() + 1)
@@ -16,12 +13,8 @@ export default function Home() {
   const localMonth =
     localStorage.getItem("selectedMonth") ??
     localStorage.setItem("selectedMonth", month);
-  const [selectedMonth, setSelectedMonth] = useState(localMonth);
 
-  const selectedByMonthItems = [...list].filter((el) => {
-    return el.date.slice(5, 7) === selectedMonth;
-  });
-  const [monthList, setMonthList] = useState(selectedByMonthItems);
+  const [selectedMonth, setSelectedMonth] = useState(localMonth);
 
   return (
     <>
@@ -30,11 +23,10 @@ export default function Home() {
           <StButton>저장</StButton>
         </ExpenseForm>
         <Calendar
-          setMonthList={setMonthList}
           selectedMonth={selectedMonth}
           setSelectedMonth={setSelectedMonth}
         />
-        <ExpenseList monthList={monthList} />
+        <ExpenseList selectedMonth={selectedMonth} />
       </div>
     </>
   );

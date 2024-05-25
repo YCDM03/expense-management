@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useState } from "react";
 import { useContext } from "react";
 import { ListContext } from "../context/ListContext";
 
@@ -49,21 +48,7 @@ const monthArr = [
   `12`,
 ];
 
-export default function Calendar({
-  setMonthList,
-  selectedMonth,
-  setSelectedMonth,
-}) {
-  const { list } = useContext(ListContext);
-  const [select, setSelect] = useState(selectedMonth);
-
-  const sortMonth = (month) => {
-    const arr = [...list].filter((el) => {
-      return el.date.slice(5, 7) === month;
-    });
-    setMonthList(() => arr);
-  };
-
+export default function Calendar({ selectedMonth, setSelectedMonth }) {
   return (
     <StCalUl>
       {monthArr.map((month) => {
@@ -71,12 +56,10 @@ export default function Calendar({
           <StMonthLi
             key={month}
             onClick={() => {
-              setSelect(() => month);
-              sortMonth(month);
-              localStorage.setItem("selectedMonth", month);
               setSelectedMonth(() => month);
+              localStorage.setItem("selectedMonth", month);
             }}
-            $selected={select === month ? true : false}
+            $selected={selectedMonth === month ? true : false}
           >
             {month + " 월"}
           </StMonthLi>

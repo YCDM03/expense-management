@@ -46,16 +46,18 @@ const StH3 = styled.h3`
   color: #fd009c;
 `;
 
-export default function ExpenseList({ monthList }) {
+export default function ExpenseList({ selectedMonth }) {
   const { list } = useContext(ListContext);
-  const usedList = monthList === null ? list : monthList;
+  const monthList = list.filter((el) => {
+    return el.date.slice(5, 7) === selectedMonth;
+  });
   return (
     <StUl>
-      {usedList.map((el) => {
+      {monthList.map((el) => {
         const { id, date, type, price, detail } = el;
         return (
-          <StLi key={id + list.length}>
-            <Link style={linkStyle} to={"/edit/" + id} list={{ list }}>
+          <StLi key={id}>
+            <Link style={linkStyle} to={"/edit/" + id}>
               <StH3>{date}</StH3>
               <StContentDiv>
                 <span>
