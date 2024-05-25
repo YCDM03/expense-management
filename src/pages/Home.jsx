@@ -6,7 +6,7 @@ import { StButton } from "../shared/FormComponent";
 import { ListContext } from "../context/ListContext";
 
 export default function Home() {
-  const { list, setList } = useContext(ListContext);
+  const { list } = useContext(ListContext);
 
   const month =
     new Date().getMonth() + 1 < 10
@@ -16,13 +16,12 @@ export default function Home() {
   const localMonth =
     localStorage.getItem("selectedMonth") ??
     localStorage.setItem("selectedMonth", month);
-
   const [selectedMonth, setSelectedMonth] = useState(localMonth);
 
-  const arr = list.filter((el) => {
+  const selectedByMonthItems = [...list].filter((el) => {
     return el.date.slice(5, 7) === selectedMonth;
   });
-  const [monthList, setMonthList] = useState(arr);
+  const [monthList, setMonthList] = useState(selectedByMonthItems);
 
   return (
     <>

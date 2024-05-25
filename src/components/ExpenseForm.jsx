@@ -9,6 +9,8 @@ import {
   StBtnDiv,
 } from "../shared/FormComponent";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { ListContext } from "../context/ListContext";
 
 const expenseArr = ["날짜", "지출 항목", "지출 금액", "지출 내용"];
 const expenseNameArr = ["date", "type", "price", "detail"];
@@ -28,6 +30,7 @@ export default function ExpenseForm({
     { price: true },
     { detail: true },
   ]);
+  const { setList } = useContext(ListContext);
 
   const addExpenseItem = (e) => {
     e.preventDefault();

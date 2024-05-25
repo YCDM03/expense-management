@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-
+import { useContext } from "react";
+import { ListContext } from "../context/ListContext";
 import styled from "styled-components";
 
 const StUl = styled.ul`
@@ -46,13 +47,14 @@ const StH3 = styled.h3`
 `;
 
 export default function ExpenseList({ monthList }) {
+  const { list } = useContext(ListContext);
   const usedList = monthList === null ? list : monthList;
   return (
     <StUl>
       {usedList.map((el) => {
         const { id, date, type, price, detail } = el;
         return (
-          <StLi key={id}>
+          <StLi key={id + list.length}>
             <Link style={linkStyle} to={"/edit/" + id} list={{ list }}>
               <StH3>{date}</StH3>
               <StContentDiv>

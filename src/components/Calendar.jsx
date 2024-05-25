@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useContext } from "react";
+import { ListContext } from "../context/ListContext";
 
 const StCalUl = styled.ul`
   max-width: 1200px;
@@ -52,6 +54,7 @@ export default function Calendar({
   selectedMonth,
   setSelectedMonth,
 }) {
+  const { list } = useContext(ListContext);
   const [select, setSelect] = useState(selectedMonth);
 
   const sortMonth = (month) => {
@@ -63,7 +66,7 @@ export default function Calendar({
 
   return (
     <StCalUl>
-      {monthArr.map((month, i) => {
+      {monthArr.map((month) => {
         return (
           <StMonthLi
             key={month}
