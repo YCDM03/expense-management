@@ -46,6 +46,16 @@ const StH3 = styled.h3`
   color: #fd009c;
 `;
 
+const StSpan = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 20px;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+`;
+
 export default function ExpenseList({ selectedMonth }) {
   const { list } = useContext(ListContext);
   const monthList = list.filter((el) => {
@@ -60,9 +70,9 @@ export default function ExpenseList({ selectedMonth }) {
             <Link style={linkStyle} to={"/edit/" + id}>
               <StH3>{date}</StH3>
               <StContentDiv>
-                <span>
+                <StSpan>
                   {type}-{detail}
-                </span>
+                </StSpan>
                 <span>{price}원</span>
               </StContentDiv>
             </Link>
