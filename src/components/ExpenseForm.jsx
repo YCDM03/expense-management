@@ -1,6 +1,5 @@
-import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import { Children, useState } from "react";
+import { useState } from "react";
 import {
   StForm,
   StDiv,
@@ -76,7 +75,7 @@ export default function ExpenseForm({
     if (!date || !type || !price || !detail) {
       return;
     }
-    //////////////////////////////////////////////////
+    //
 
     editState
       ? setList(() => [...restList, { id, date, type, price: +price, detail }])

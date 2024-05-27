@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { useContext } from "react";
-import { ListContext } from "../context/ListContext";
 
 const StCalUl = styled.ul`
   max-width: 1200px;
