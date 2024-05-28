@@ -1,11 +1,11 @@
-import { useState } from "react";
+import Router from "./shared/Router";
+import GlobalStyle from "./Globalstyle";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <div></div>
+      <GlobalStyle />
+      <Router></Router>
     </>
   );
 }
