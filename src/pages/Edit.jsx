@@ -1,8 +1,8 @@
 import { useParams, Link } from "react-router-dom";
 import ExpenseForm from "../components/ExpenseForm";
 import { StButton } from "../shared/FormComponent";
-import { useContext } from "react";
-import { ListContext } from "../context/ListContext";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteList } from "../redux/slices/listSlice";
 
 const linkStyle = {
   textDecoration: "none",
@@ -10,23 +10,16 @@ const linkStyle = {
 };
 
 export default function Edit() {
-  const { list, setList } = useContext(ListContext);
+  const list = useSelector((state) => state.list);
+  const dispatch = useDispatch();
   const params = useParams();
   const targetItem = list.find((e) => {
     return e.id === params.id;
   });
-  const restList = list.filter((e) => {
-    return e.id !== params.id;
-  });
   const editState = true;
 
   return (
-    <ExpenseForm
-      restList={restList}
-      editState={editState}
-      targetItem={targetItem}
-      id={params.id}
-    >
+    <ExpenseForm editState={editState} targetItem={targetItem} id={params.id}>
       <Link to={"/"} style={linkStyle}>
         <StButton type="button">메인으로</StButton>
       </Link>
@@ -39,7 +32,7 @@ export default function Edit() {
             if (real) {
               alert("삭제되었습니다.");
             }
-            setList(() => [...restList]);
+            dispatch(deleteList(targetItem));
           }}
         >
           삭제

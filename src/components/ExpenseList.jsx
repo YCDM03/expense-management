@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { ListContext } from "../context/ListContext";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const StUl = styled.ul`
   max-width: 1200px;
@@ -57,8 +56,8 @@ const StSpan = styled.span`
 `;
 
 export default function ExpenseList({ selectedMonth }) {
-  const { list } = useContext(ListContext);
-  const monthList = list.filter((el) => {
+  const list = useSelector((state) => state.list);
+  const monthList = [...list].filter((el) => {
     return el.date.slice(5, 7) === selectedMonth;
   });
   return (

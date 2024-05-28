@@ -8,14 +8,13 @@ import {
   StBtnDiv,
 } from "../shared/FormComponent";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { ListContext } from "../context/ListContext";
+import { useDispatch } from "react-redux";
+import { addList, editList } from "../redux/slices/listSlice";
 
 const expenseArr = ["날짜", "지출 항목", "지출 금액", "지출 내용"];
 const expenseNameArr = ["date", "type", "price", "detail"];
 
 export default function ExpenseForm({
-  restList,
   editState,
   targetItem,
   id,
@@ -29,7 +28,7 @@ export default function ExpenseForm({
     { price: true },
     { detail: true },
   ]);
-  const { setList } = useContext(ListContext);
+  const dispatch = useDispatch();
 
   const addExpenseItem = (e) => {
     e.preventDefault();
@@ -78,11 +77,8 @@ export default function ExpenseForm({
     //
 
     editState
-      ? setList(() => [...restList, { id, date, type, price: +price, detail }])
-      : setList((prev) => [
-          ...prev,
-          { id: uuidv4(), date, type, price, detail },
-        ]);
+      ? dispatch(editList({ id, date, type, price: +price, detail }))
+      : dispatch(addList({ id: uuidv4(), date, type, price, detail }));
 
     editState ? navigate("/") : e.target.reset();
   };
