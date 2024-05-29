@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import ExpenseForm from "../components/ExpenseForm";
 import { StButton } from "../shared/FormComponent";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ export default function Edit() {
   const list = useSelector((state) => state.list);
   const dispatch = useDispatch();
   const params = useParams();
+  const navigate = useNavigate();
   const targetItem = list.find((e) => {
     return e.id === params.id;
   });
@@ -33,6 +34,7 @@ export default function Edit() {
             if (deletion) {
               alert("삭제되었습니다.");
               dispatch(deleteList(targetItem));
+              navigate("/");
             }
           }}
         >
