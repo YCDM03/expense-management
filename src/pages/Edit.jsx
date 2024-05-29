@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import ExpenseForm from "../components/ExpenseForm";
 import { StButton } from "../shared/FormComponent";
 
@@ -9,6 +9,7 @@ const linkStyle = {
 
 export default function Edit({ list, setList }) {
   const params = useParams();
+  const navigate = useNavigate();
   const targetItem = list.find((e) => {
     return e.id === params.id;
   });
@@ -33,12 +34,14 @@ export default function Edit({ list, setList }) {
         <Link to={"/"} style={linkStyle}>
           <StButton
             type="button"
-            onClick={() => {
-              const real = confirm("정말로 삭제하시겠습니까?");
-              if (real) {
+            onClick={(e) => {
+              e.preventDefault();
+              const deletion = confirm("정말로 삭제하시겠습니까?");
+              if (deletion) {
                 alert("삭제되었습니다.");
+                setList(() => [...restList]);
+                navigate("/");
               }
-              setList(() => [...restList]);
             }}
           >
             삭제
