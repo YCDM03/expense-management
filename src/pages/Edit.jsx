@@ -27,7 +27,8 @@ export default function Edit() {
       <Link to={"/"} style={linkStyle}>
         <StButton
           type="button"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             const deletion = confirm("정말로 삭제하시겠습니까?");
             if (deletion) {
               alert("삭제되었습니다.");
