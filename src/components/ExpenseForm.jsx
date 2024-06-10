@@ -15,8 +15,8 @@ const expenseArr = ["날짜", "지출 항목", "지출 금액", "지출 내용"]
 const expenseNameArr = ["date", "type", "price", "detail"];
 
 export default function ExpenseForm({
-  editState,
-  targetItem,
+  forEdit,
+  targetItem = null,
   id,
   children,
   selectedMonth,
@@ -28,6 +28,7 @@ export default function ExpenseForm({
     { price: true },
     { detail: true },
   ]);
+
   const dispatch = useDispatch();
 
   const addExpenseItem = (e) => {
@@ -76,11 +77,11 @@ export default function ExpenseForm({
     }
     //
 
-    editState
+    forEdit
       ? dispatch(editList({ id, date, type, price: +price, detail }))
       : dispatch(addList({ id: uuidv4(), date, type, price, detail }));
 
-    editState ? navigate("/") : e.target.reset();
+    forEdit ? navigate("/") : e.target.reset();
   };
 
   return (
@@ -99,7 +100,7 @@ export default function ExpenseForm({
                 max="2024-12-31"
                 $valid={valid[i][`${expenseNameArr[i]}`]}
                 defaultValue={
-                  editState
+                  forEdit
                     ? targetItem[expenseNameArr[i]]
                     : "2024-" + selectedMonth + "-01"
                 }
