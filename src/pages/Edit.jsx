@@ -17,10 +17,9 @@ export default function Edit() {
   const targetItem = list.find((e) => {
     return e.id === params.id;
   });
-  const editState = true;
 
   return (
-    <ExpenseForm editState={editState} targetItem={targetItem} id={params.id}>
+    <ExpenseForm forEdit={true} targetItem={targetItem} id={params.id}>
       <Link to={"/"} style={linkStyle}>
         <StButton type="button">메인으로</StButton>
       </Link>
