@@ -11,8 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addList, editList } from "../redux/slices/listSlice";
 
-const expenseArr = ["날짜", "지출 항목", "지출 금액", "지출 내용"];
-const expenseNameArr = ["date", "type", "price", "detail"];
+const expenseKoNameArr = ["날짜", "지출 항목", "지출 금액", "지출 내용"];
+const expenseEnNameArr = ["date", "type", "price", "detail"];
 
 export default function ExpenseForm({
   forEdit,
@@ -38,35 +38,35 @@ export default function ExpenseForm({
     //form vaildation
     if (isNaN(formData.get("price"))) {
       setValid(() => {
-        const arr = [...valid];
-        arr[2][`price`] = false;
-        return arr;
+        const validArr = [...valid];
+        validArr[2][`price`] = false;
+        return validArr;
       });
       return alert("금액은 숫자로 입력해주세요");
     } else {
       setValid(() => {
-        const arr = [...valid];
-        arr[2][`price`] = true;
-        return arr;
+        const validArr = [...valid];
+        validArr[2][`price`] = true;
+        return validArr;
       });
     }
 
-    const inputArr = expenseNameArr.map((el) => {
+    const inputArr = expenseEnNameArr.map((el) => {
       return formData.get(el);
     });
 
     for (let i = 0; i < inputArr.length; i++) {
       if (!inputArr[i]) {
         setValid(() => {
-          const arr = [...valid];
-          arr[i][`${expenseNameArr[i]}`] = false;
-          return arr;
+          const validArr = [...valid];
+          validArr[i][`${expenseEnNameArr[i]}`] = false;
+          return validArr;
         });
       } else {
         setValid(() => {
-          const arr = [...valid];
-          arr[i][`${expenseNameArr[i]}`] = true;
-          return arr;
+          const validArr = [...valid];
+          validArr[i][`${expenseEnNameArr[i]}`] = true;
+          return validArr;
         });
       }
     }
@@ -86,7 +86,7 @@ export default function ExpenseForm({
 
   return (
     <StForm onSubmit={addExpenseItem} $targetItem={targetItem ? true : false}>
-      {expenseArr.map((item, i) => {
+      {expenseKoNameArr.map((item, i) => {
         if (item === "날짜") {
           return (
             <StDiv key={"div" + item} $targetItem={targetItem ? true : false}>
@@ -94,18 +94,18 @@ export default function ExpenseForm({
               <StInput
                 key={item + selectedMonth}
                 type="date"
-                name={expenseNameArr[i]}
+                name={expenseEnNameArr[i]}
                 placeholder={item}
                 min="2024-01-01"
                 max="2024-12-31"
-                $valid={valid[i][`${expenseNameArr[i]}`]}
+                $valid={valid[i][`${expenseEnNameArr[i]}`]}
                 defaultValue={
                   forEdit
-                    ? targetItem[expenseNameArr[i]]
+                    ? targetItem[expenseEnNameArr[i]]
                     : "2024-" + selectedMonth + "-01"
                 }
               />
-              <StValidDiv $valid={valid[i][`${expenseNameArr[i]}`]}>
+              <StValidDiv $valid={valid[i][`${expenseEnNameArr[i]}`]}>
                 올바른 날짜를 입력해주세요
               </StValidDiv>
             </StDiv>
@@ -118,12 +118,12 @@ export default function ExpenseForm({
             <StInput
               key={item}
               type="text"
-              name={expenseNameArr[i]}
+              name={expenseEnNameArr[i]}
               placeholder={item}
-              $valid={valid[i][`${expenseNameArr[i]}`]}
-              defaultValue={targetItem ? targetItem[expenseNameArr[i]] : null}
+              $valid={valid[i][`${expenseEnNameArr[i]}`]}
+              defaultValue={targetItem ? targetItem[expenseEnNameArr[i]] : null}
             />
-            <StValidDiv $valid={valid[i][`${expenseNameArr[i]}`]}>
+            <StValidDiv $valid={valid[i][`${expenseEnNameArr[i]}`]}>
               올바른 {item.slice(-2)}을 입력해주세요
             </StValidDiv>
           </StDiv>
